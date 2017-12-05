@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         Bitmap bitmap = BitmapFactory.decodeFile(pathToPhoto);
         imageView.setImageBitmap(bitmap);
-
+////
         Button keypointsButton = (Button) findViewById(R.id.AnalyzeBtn);
 
         keypointsButton.setOnClickListener(this);
