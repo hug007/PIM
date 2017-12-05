@@ -100,7 +100,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             cursor.moveToFirst();
             return cursor.getString(dataIndex);
         }
-        catch(Exception e){return "1";}
+        catch(Exception e)
+        {
+            return "1";
+        }
     }
 
     private void captureCamera() {
