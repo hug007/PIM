@@ -46,14 +46,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Uri picUri;
 
     private static final int PHOTO_LIB_REQUEST = 1;
-    static final String WIN_NAME = "Display window";
+    //static final String WIN_NAME = "Display window"; inutile ?
 
     final String TAG = MainActivity.class.getName();
     private String pathToPhoto;
     private Bitmap  photoBitmap;
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    //private static final int REQUEST_IMAGE_CAPTURE = 1; inutile ?
 
-    // SIFT keypoint features
+    // variables pour le SIFT (keypoint features)
     private static final int N_FEATURES = 0;
     private static final int N_OCTAVE_LAYERS = 3;
     private static final double CONTRAST_THRESHOLD = 0.04;
@@ -103,6 +103,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         catch(Exception e){return "1";}
     }
 
+    private void captureCamera() {
+        //use standard intent to capture an image
+        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //we will handle the returned data in onActivityResult
+        startActivityForResult(captureIntent, CAMERA_CAPTURE);
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PHOTO_LIB_REQUEST && resultCode == RESULT_OK) {
@@ -120,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // A supprimer ?
+    /*
     public static File ToCache(Context context, String Path, String fileName) {
         InputStream input;
         FileOutputStream output;
@@ -144,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return null;
         }
     }
-
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -162,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         imageView = (ImageView) findViewById(R.id.imageView);
 
+        // A supprimer ?
         //Ajout venu du prof
         /*
         String refFile = "Pepsi_10.jpg";
@@ -177,36 +188,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //fin de l'ajout du prof
         */
     }
-    private void captureCamera() {
-        //use standard intent to capture an image
-        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //we will handle the returned data in onActivityResult
-        startActivityForResult(captureIntent, CAMERA_CAPTURE);
 
-    }
-    
     @Override
     public void onClick(View v){
         switch(v.getId()) {
             case R.id.CaptureBtn:
-                Toast.makeText(this, TAG + " OnClick", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,TAG, Toast.LENGTH_SHORT).show();
                 Log.i(TAG, "OnClick");
                 captureCamera();
                 break;
             case R.id.GalleryBtn:
-                Toast.makeText(this, TAG + " OnClick", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,TAG, Toast.LENGTH_SHORT).show();
                 Log.i(TAG, "OnClick");
                 startPhotoLibraryActivity();
 
                 break;
             case R.id.AnalyzeBtn:
-                Toast.makeText(this,TAG+" OnClick",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,TAG,Toast.LENGTH_SHORT).show();
                 Log.i(TAG,"OnClick");
                 break;
         }
 
         //debut de l'ajout du prof
-
         /*
         img = imread(this.pathToPhoto);
         SiftDesc = new opencv_nonfree.SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
