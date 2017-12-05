@@ -134,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // A supprimer ?
-    /*
+
+
     public static File ToCache(Context context, String Path, String fileName) {
         InputStream input;
         FileOutputStream output;
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return null;
         }
     }
-*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // A supprimer ?
         //Ajout venu du prof
-        /*
+
         String refFile = "Pepsi_10.jpg";
         this.pathToPhoto = this.ToCache(this, "images" + "/" + refFile, refFile).getPath();
 
@@ -188,11 +188,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bitmap bitmap = BitmapFactory.decodeFile(pathToPhoto);
         imageView.setImageBitmap(bitmap);
 
-        Button keypointsButton = (Button) findViewById(R.id.Keypoints);
+        Button keypointsButton = (Button) findViewById(R.id.AnalyzeBtn);
 
         keypointsButton.setOnClickListener(this);
         //fin de l'ajout du prof
-        */
+
     }
 
     @Override
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //debut de l'ajout du prof
-        /*
+
         img = imread(this.pathToPhoto);
         SiftDesc = new opencv_nonfree.SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
 
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SiftDesc.detect(img, keypoints);
 
         Toast.makeText(this, "Nb of detected keypoints:" + keypoints.capacity(), Toast.LENGTH_LONG).show();
-        */
+
         //fin de l'ajout du prof
 
         //Algorithme propose pour l'analyse des images
