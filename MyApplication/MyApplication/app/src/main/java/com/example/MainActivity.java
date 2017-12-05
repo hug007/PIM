@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_nonfree;
+import org.bytedeco.javacpp.opencv_features2d;
+import static org.bytedeco.javacpp.opencv_highgui.imread;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -30,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -224,5 +227,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this, "Nb of detected keypoints:" + keypoints.capacity(), Toast.LENGTH_LONG).show();
         */
         //fin de l'ajout du prof
+
+        //Algorithme propose pour l'analyse des images
+        /*
+        Lire les images d'entrainement
+        Lire l'image selectionee (issue de la galerie ou de l'appareil photo)
+        Calculer leur distance
+        Classer l'image selectionnee selon quoi
+        */
+        //
     }
 }
