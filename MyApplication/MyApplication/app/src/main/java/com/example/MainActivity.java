@@ -1,5 +1,6 @@
 package com.example;
 // ajout pour git
+// ajout github
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
