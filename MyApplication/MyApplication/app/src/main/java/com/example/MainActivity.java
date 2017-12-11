@@ -2,6 +2,7 @@ package com.example;
 // ajout pour git
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -126,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //photoUri.getScheme().toString();
             imageView.setImageURI(photoUri);
             //processPhotoLibraryResult(data);
+            //
         }
         if (requestCode == CAMERA_CAPTURE && resultCode == RESULT_OK){
             Bitmap photo = (Bitmap) data.getExtras().get("data");
@@ -164,6 +166,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
+        //Block rotation screen
+        super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
