@@ -1,7 +1,16 @@
 package com.example;
-// ajout pour git
-// ajout github
-//ajout 4
+
+/*
+* import java.text.SimpleDateFormat;
+* import android.os.Environment;
+* import java.util.Date;
+* import android.provider.MediaStore;
+* import android.provider.MediaStore.Images;
+* import java.io.ByteArrayOutputStream;
+* import android.widget.TextView;
+* import java.io.FileNotFoundException;
+* */
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -11,45 +20,42 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
+
+import android.provider.MediaStore.Images.Media;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_nonfree;
 import org.bytedeco.javacpp.opencv_features2d;
+
+import static android.provider.MediaStore.*;
 import static org.bytedeco.javacpp.opencv_highgui.imread;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     //declaration des variables
 
-    private Button CaptureBtn = null;
+    private Button captureBtn = null;
     private Button GalleryBtn = null;
-    private Button AnalyzeBtn = null;
     private ImageView imageView = null;
 
     //keep track of camera capture intent
     final int CAMERA_CAPTURE = 2;
     //captured picture uri
-    private Uri picUri;
+    // private Uri picUri; inutile ?
 
     private static final int PHOTO_LIB_REQUEST = 1;
     //static final String WIN_NAME = "Display window"; inutile ?
@@ -100,9 +106,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected String getRealPath(Context context,Uri uri){
         Cursor cursor;
         try{
-            String[] projection = {MediaStore.Images.Media.DATA};
+            String[] projection = {Media.DATA};
             cursor = context.getContentResolver().query(uri,projection,null,null,null);
-            int dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            if (cursor == null) throw new AssertionError();
+            int dataIndex = cursor.getColumnIndexOrThrow(Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(dataIndex);
         }
@@ -114,10 +121,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void captureCamera() {
         //use standard intent to capture an image
-        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent captureIntent = new Intent(ACTION_IMAGE_CAPTURE);
         //we will handle the returned data in onActivityResult
         startActivityForResult(captureIntent, CAMERA_CAPTURE);
-
     }
 
     @Override
@@ -129,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //photoUri.getScheme().toString();
             imageView.setImageURI(photoUri);
             //processPhotoLibraryResult(data);
-            //
         }
         if (requestCode == CAMERA_CAPTURE && resultCode == RESULT_OK){
             Bitmap photo = (Bitmap) data.getExtras().get("data");
@@ -137,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this,data.getExtras().get("data").toString() ,Toast.LENGTH_LONG).show();
         }
     }
-
 
 
     public static File ToCache(Context context, String Path, String fileName) {
@@ -151,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             input = assetManager.open(Path);
             buffer = new byte[input.available()];
-            input.read(buffer);
+            int read = input.read(buffer);
             input.close();
 
             output = new FileOutputStream(filePath);
@@ -173,32 +177,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CaptureBtn = (Button) findViewById(R.id.CaptureBtn);
-        CaptureBtn.setOnClickListener(this);
+        captureBtn = (Button) findViewById(R.id.CaptureBtn);
+        captureBtn.setOnClickListener(this);
 
         GalleryBtn = (Button) findViewById(R.id.GalleryBtn);
         GalleryBtn.setOnClickListener(this);
 
-        AnalyzeBtn = (Button) findViewById(R.id.AnalyzeBtn);
-        AnalyzeBtn.setOnClickListener(this);
+        Button analyzeBtn = (Button) findViewById(R.id.AnalyzeBtn);
+        analyzeBtn.setOnClickListener(this);
 
         imageView = (ImageView) findViewById(R.id.imageView);
 
-        // A supprimer ?
         //Ajout venu du prof
-
         String refFile = "Pepsi_10.jpg";
         this.pathToPhoto = this.ToCache(this, "images" + "/" + refFile, refFile).getPath();
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         Bitmap bitmap = BitmapFactory.decodeFile(pathToPhoto);
         imageView.setImageBitmap(bitmap);
-////
-        Button keypointsButton = (Button) findViewById(R.id.AnalyzeBtn);
 
-        keypointsButton.setOnClickListener(this);
+        Button buttonkeypoints = (Button) findViewById(R.id.KeypointsBtn);
+        buttonkeypoints.setOnClickListener(this);
         //fin de l'ajout du prof
-
     }
 
     @Override
@@ -222,7 +222,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //debut de l'ajout du prof
-
         img = imread(this.pathToPhoto);
         SiftDesc = new opencv_nonfree.SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
 
@@ -231,7 +230,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SiftDesc.detect(img, keypoints);
 
         Toast.makeText(this, "Nb of detected keypoints:" + keypoints.capacity(), Toast.LENGTH_LONG).show();
-
         //fin de l'ajout du prof
 
         //Algorithme propose pour l'analyse des images
