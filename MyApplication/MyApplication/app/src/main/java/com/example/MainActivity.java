@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //Log.i(TAG, photoUri.toString());
             //photoUri.getScheme().toString();
             imageView.setImageURI(photoUri);
+            img = imread(photoUri.getPath());
             //processPhotoLibraryResult(data);
             //
         }
@@ -186,8 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // A supprimer ?
         //Ajout venu du prof
-
-        String refFile = "Pepsi_10.jpg";
+        String refFile = "Coca_7.jpg";
         this.pathToPhoto = this.ToCache(this, "images" + "/" + refFile, refFile).getPath();
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
@@ -218,29 +218,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.AnalyzeBtn:
                 Toast.makeText(this,TAG,Toast.LENGTH_SHORT).show();
                 Log.i(TAG,"OnClick");
+                //debut de l'ajout du prof
+
+                //img = imread(this.pathToPhoto);
+                SiftDesc = new opencv_nonfree.SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
+
+                opencv_core.Mat descriptor = new opencv_core.Mat();
+                opencv_features2d.KeyPoint keypoints = new opencv_features2d.KeyPoint();
+                SiftDesc.detect(img, keypoints);
+
+                Toast.makeText(this, "Nb of detected keypoints:" + keypoints.capacity(), Toast.LENGTH_LONG).show();
+
+                //fin de l'ajout du prof
+
+                //Algorithme propose pour l'analyse des images
+                /*
+                Lire les images d'entrainement
+                Lire l'image selectionee (issue de la galerie ou de l'appareil photo)
+                Calculer leur distance
+                Classer l'image selectionnee selon quoi
+                */
+                //
                 break;
         }
-
-        //debut de l'ajout du prof
-
-        img = imread(this.pathToPhoto);
-        SiftDesc = new opencv_nonfree.SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
-
-        opencv_core.Mat descriptor = new opencv_core.Mat();
-        opencv_features2d.KeyPoint keypoints = new opencv_features2d.KeyPoint();
-        SiftDesc.detect(img, keypoints);
-
-        Toast.makeText(this, "Nb of detected keypoints:" + keypoints.capacity(), Toast.LENGTH_LONG).show();
-
-        //fin de l'ajout du prof
-
-        //Algorithme propose pour l'analyse des images
-        /*
-        Lire les images d'entrainement
-        Lire l'image selectionee (issue de la galerie ou de l'appareil photo)
-        Calculer leur distance
-        Classer l'image selectionnee selon quoi
-        */
-        //
     }
 }
