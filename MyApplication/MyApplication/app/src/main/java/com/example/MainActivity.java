@@ -44,7 +44,10 @@ import java.io.InputStream;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.net.URI;
+=======
+>>>>>>> parent of 2334f83... dernière version
 =======
 >>>>>>> parent of 2334f83... dernière version
 =======
