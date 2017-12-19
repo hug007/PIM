@@ -43,7 +43,10 @@ import java.io.IOException;
 import java.io.InputStream;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.net.URI;
+=======
+>>>>>>> parent of 2334f83... dernière version
 =======
 >>>>>>> parent of 2334f83... dernière version
 import java.text.SimpleDateFormat;
