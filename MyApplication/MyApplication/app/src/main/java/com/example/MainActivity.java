@@ -1,7 +1,15 @@
 package com.example;
-// ajout pour git
-// ajout github
-//ajout 4
+
+/*
+import android.os.Environment;
+import android.widget.TextView;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+ */
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -11,31 +19,24 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import android.widget.Toast;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_nonfree;
 import org.bytedeco.javacpp.opencv_features2d;
 import static org.bytedeco.javacpp.opencv_highgui.imread;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             File file = new File(path);
             //this.pathToPhoto = this.ToCache(this, path, name).getPath();
 
-            img = imread(file.);
+            //img = imread(file);
             //this.pathToPhoto = this.ToCache(this, "images" + "/" + refFile, refFile).getPath();
             Toast.makeText(this,file.toString()+" ttt"+file.getAbsolutePath()+"aaaaaaaa"+photoUri.getPathSegments().toString() + " " + img.toString() ,Toast.LENGTH_LONG).show();
             //processPhotoLibraryResult(data);
@@ -249,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Calculer leur distance
                 Classer l'image selectionnee selon quoi
                 */
-                //
+
                 break;
         }
     }
