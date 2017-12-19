@@ -30,16 +30,18 @@
 
     <Button
         android:id="@+id/CaptureBtn"
-        android:layout_width="137dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="72dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:text="Capture photo"
+<<<<<<< HEAD
 <<<<<<< HEAD
         app:layout_constraintBottom_toTopOf="@+id/imageView"
 =======
         tools:ignore="HardcodedText"
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 2334f83... dernière version
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -42,7 +42,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.net.URI;
+=======
+>>>>>>> parent of 2334f83... dernière version
 import java.text.SimpleDateFormat;
 import java.util.Date;
 =======
@@ -139,23 +142,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //Toast.makeText(this,data.getExtras().get("data").toString(),Toast.LENGTH_LONG).show();
             //Log.i(TAG, photoUri.toString());
             //photoUri.getScheme().toString();
-            String path = "";
-            String name = "name.jpg";
             imageView.setImageURI(photoUri);
-            path = photoUri.getEncodedPath();
-            File file = new File(path);
-            //this.pathToPhoto = this.ToCache(this, path, name).getPath();
-
-            img = imread(file.);
-            //this.pathToPhoto = this.ToCache(this, "images" + "/" + refFile, refFile).getPath();
-            Toast.makeText(this,file.toString()+" ttt"+file.getAbsolutePath()+"aaaaaaaa"+photoUri.getPathSegments().toString() + " " + img.toString() ,Toast.LENGTH_LONG).show();
+            img = imread(photoUri.getPath());
             //processPhotoLibraryResult(data);
         }
         if (requestCode == CAMERA_CAPTURE && resultCode == RESULT_OK){
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
-            //img = imread();
-            //imrea
             Toast.makeText(this,data.getExtras().get("data").toString() ,Toast.LENGTH_LONG).show();
         }
     }
@@ -208,11 +201,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Ajout venu du prof
 <<<<<<< HEAD
         String refFile = "Coca_7.jpg";
-        //this.pathToPhoto = this.ToCache(this, "images" + "/" + refFile, refFile).getPath();
+        this.pathToPhoto = this.ToCache(this, "images" + "/" + refFile, refFile).getPath();
 
-        //ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        //Bitmap bitmap = BitmapFactory.decodeFile(pathToPhoto);
-        //imageView.setImageBitmap(bitmap);
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        Bitmap bitmap = BitmapFactory.decodeFile(pathToPhoto);
+        imageView.setImageBitmap(bitmap);
 ////
         Button keypointsButton = (Button) findViewById(R.id.AnalyzeBtn);
 =======
@@ -261,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SiftDesc = new opencv_nonfree.SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
 >>>>>>> origin/master
 
-                Toast.makeText(this, "Nb of detected keypoints:" + keypoints.capacity()+" "+img.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Nb of detected keypoints:" + keypoints.capacity(), Toast.LENGTH_LONG).show();
 
 <<<<<<< HEAD
                 //fin de l'ajout du prof
