@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     //declaration des variables
@@ -90,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         File photoFile = new File(pathToPhoto);
         photoBitmap = decodeFile(photoFile);
         imageView.setImageBitmap(photoBitmap);
+        photoUri.uri.getPath();
     }
 
     protected Bitmap decodeFile(File file) {
@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Ajout venu du prof
         String refFile = "Pepsi_10.jpg";
+
         this.pathToPhoto = this.ToCache(this, "images" + "/" + refFile, refFile).getPath();
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
@@ -222,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //debut de l'ajout du prof
+        Toast.makeText(this, "$$$$$$$$$$$$ : "+pathToPhoto.toString(),Toast.LENGTH_LONG).show();
         img = imread(this.pathToPhoto);
         SiftDesc = new opencv_nonfree.SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
 
