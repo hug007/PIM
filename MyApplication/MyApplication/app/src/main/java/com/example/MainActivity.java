@@ -41,7 +41,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+<<<<<<< HEAD
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+=======
 
+>>>>>>> origin/master
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -133,12 +139,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //Toast.makeText(this,data.getExtras().get("data").toString(),Toast.LENGTH_LONG).show();
             //Log.i(TAG, photoUri.toString());
             //photoUri.getScheme().toString();
+            String path = "";
+            String name = "name.jpg";
             imageView.setImageURI(photoUri);
+            path = photoUri.getEncodedPath();
+            File file = new File(path);
+            //this.pathToPhoto = this.ToCache(this, path, name).getPath();
+
+            img = imread(file.);
+            //this.pathToPhoto = this.ToCache(this, "images" + "/" + refFile, refFile).getPath();
+            Toast.makeText(this,file.toString()+" ttt"+file.getAbsolutePath()+"aaaaaaaa"+photoUri.getPathSegments().toString() + " " + img.toString() ,Toast.LENGTH_LONG).show();
             //processPhotoLibraryResult(data);
         }
         if (requestCode == CAMERA_CAPTURE && resultCode == RESULT_OK){
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
+            //img = imread();
+            //imrea
             Toast.makeText(this,data.getExtras().get("data").toString() ,Toast.LENGTH_LONG).show();
         }
     }
@@ -189,12 +206,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imageView = (ImageView) findViewById(R.id.imageView);
 
         //Ajout venu du prof
+<<<<<<< HEAD
+        String refFile = "Coca_7.jpg";
+        //this.pathToPhoto = this.ToCache(this, "images" + "/" + refFile, refFile).getPath();
+
+        //ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        //Bitmap bitmap = BitmapFactory.decodeFile(pathToPhoto);
+        //imageView.setImageBitmap(bitmap);
+////
+        Button keypointsButton = (Button) findViewById(R.id.AnalyzeBtn);
+=======
         String refFile = "Pepsi_10.jpg";
         this.pathToPhoto = this.ToCache(this, "images" + "/" + refFile, refFile).getPath();
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         Bitmap bitmap = BitmapFactory.decodeFile(pathToPhoto);
         imageView.setImageBitmap(bitmap);
+>>>>>>> origin/master
 
         Button buttonkeypoints = (Button) findViewById(R.id.KeypointsBtn);
         buttonkeypoints.setOnClickListener(this);
@@ -218,17 +246,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.AnalyzeBtn:
                 Toast.makeText(this,TAG,Toast.LENGTH_SHORT).show();
                 Log.i(TAG,"OnClick");
-                break;
-        }
+                //debut de l'ajout du prof
 
+<<<<<<< HEAD
+                //img = imread(this.pathToPhoto);
+                SiftDesc = new opencv_nonfree.SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
+
+                opencv_core.Mat descriptor = new opencv_core.Mat();
+                opencv_features2d.KeyPoint keypoints = new opencv_features2d.KeyPoint();
+                SiftDesc.detect(img, keypoints);
+=======
         //debut de l'ajout du prof
         img = imread(this.pathToPhoto);
         SiftDesc = new opencv_nonfree.SIFT(N_FEATURES, N_OCTAVE_LAYERS, CONTRAST_THRESHOLD, EDGE_THRESHOLD, SIGMA);
+>>>>>>> origin/master
 
-        opencv_core.Mat descriptor = new opencv_core.Mat();
-        opencv_features2d.KeyPoint keypoints = new opencv_features2d.KeyPoint();
-        SiftDesc.detect(img, keypoints);
+                Toast.makeText(this, "Nb of detected keypoints:" + keypoints.capacity()+" "+img.toString(), Toast.LENGTH_LONG).show();
 
+<<<<<<< HEAD
+                //fin de l'ajout du prof
+
+                //Algorithme propose pour l'analyse des images
+                /*
+                Lire les images d'entrainement
+                Lire l'image selectionee (issue de la galerie ou de l'appareil photo)
+                Calculer leur distance
+                Classer l'image selectionnee selon quoi
+                */
+                //
+                break;
+        }
+=======
         Toast.makeText(this, "Nb of detected keypoints:" + keypoints.capacity(), Toast.LENGTH_LONG).show();
         //fin de l'ajout du prof
 
@@ -240,5 +288,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Classer l'image selectionnee selon quoi
         */
         //
+>>>>>>> origin/master
     }
 }
