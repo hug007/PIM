@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 opencv_features2d.KeyPoint keypoints = new opencv_features2d.KeyPoint();
                 SiftDesc.detect(img, keypoints);
 
-                Toast.makeText(this, "Nb of detected keypoints:" + keypoints.capacity()+" "+img.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Nb of detected keypoints:" + keypoints.size()+" "+img.toString(), Toast.LENGTH_LONG).show();
 
                 //fin de l'ajout du prof
 
