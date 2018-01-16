@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -47,6 +49,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
@@ -179,49 +182,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public interface VolleyCallback{
-        void onSuccess(int result);
-    }
+    public static String getFileContents(final File file)throws IOException {
+        final InputStream inputStream = new FileInputStream(file);
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-    //Cette méthode ne fonctionne pas encore, la requête sans le callback marche bien, le parcours du JSON aussi. Il faut juste réussir à retourner qq chose à partir de ces requêtes Volley
-    private void getJSON(final VolleyCallback callback) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        boolean done = false;
+        while (!done) {
+            final String line = reader.readLine();
+            done = (line == null);
 
-        StringRequest stringRequestJSON = new StringRequest(Request.Method.GET, "http://www-rech.telecom-lille.fr/nonfreesift/index.json",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        int i = 0;
-                        callback.onSuccess(i);
-                        try {
-                            List classifiers = new ArrayList<>();
-                            String s = "";
-
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray A = jsonObject.getJSONArray("brands");
-
-                            for (i = 0; i <= jsonObject.length(); i++) {
-                                JSONObject j = A.getJSONObject(i);
-                                classifiers.add(j.get("classifier").toString());
-                            }
-                            s = classifiers.toString();
-                            mtextView.setText("Response is: " + s);//response.substring(0,500));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // mTextView.setText("That didn't work!");
-                        Log.d(TAG, "@@ marche pas");
-                    }
-                }
-        );
-
-        Volley.newRequestQueue(this).add(stringRequestJSON);
+            if (line != null) {
+                stringBuilder.append(line);
+            }
+        }
+        reader.close();
+        inputStream.close();
+        return stringBuilder.toString();
     }
 
     @Override
@@ -253,14 +230,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //URL d'accès au serveur (pour les request sur la queue)
         String urlYML = "http://www-rech.telecom-lille.fr/nonfreesift/vocabulary.yml";
         String urlJSON = "http://www-rech.telecom-lille.fr/nonfreesift/index.json";
-        final String[] YMLTry = {null};
 
+        File fileJSON = new File(this.getFilesDir(), "index.json");
+
+        //Request JSON
+        StringRequest stringRequestJSON = new StringRequest(Request.Method.GET, urlJSON,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        FileOutputStream outputStream;
+                        try {
+                            outputStream = openFileOutput("index.json", Context.MODE_PRIVATE);
+                            outputStream.write(response.getBytes());
+                            outputStream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "@@ marche pas");
+                    }
+                }
+        );
+
+        queue.add(stringRequestJSON);
+
+        File fileYML = new File(this.getFilesDir(), "vocabulary.yml");
         //Request YML
         StringRequest stringRequestYML = new StringRequest(Request.Method.GET, urlYML,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        YMLTry[0] = response;
+                        FileOutputStream outputStream;
+                        try {
+                            outputStream = openFileOutput("vocabulary.yml", Context.MODE_PRIVATE);
+                            outputStream.write(response.getBytes());
+                            outputStream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         Log.d(TAG, "@@ ");
                     }
                 },
@@ -274,6 +285,86 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         );
 
         queue.add(stringRequestYML);
+
+        //Toast.makeText(this, fileYML.getName().toString(), Toast.LENGTH_LONG).show();
+        List classifiersList = new ArrayList<>();
+        int classNumber = 0;
+
+        try {
+            String stringJSON = getFileContents(fileJSON);
+            try {
+                Toast.makeText(this, getFileContents(fileJSON), Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(stringJSON);
+                JSONArray A = null;
+                A = jsonObject.getJSONArray("brands");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            JSONArray A = null;
+            try {
+                A = jsonObject.getJSONArray("brands");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for (classNumber = 0; classNumber <= jsonObject.length(); classNumber++) {
+                JSONObject j = null;
+                try {
+                    j = A.getJSONObject(classNumber);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    classifiersList.add(j.get("classifier").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            mtextView.setText("Response is: " + classifiersList.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        final opencv_ml.CvSVM[] classifiers;
+        classifiers = new opencv_ml.CvSVM[3];
+        for (int i = 0 ; i < classNumber ; i++) {
+            System.out.println("Ok. Creating class name from " + classifiersList.get(i).toString());
+            //Request Classifiers
+            StringRequest stringRequestClassifiers = new StringRequest(Request.Method.GET, "http://www-rech.telecom-lille.fr/nonfreesift/"+classifiersList.get(i).toString(),
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            FileOutputStream outputStream;
+                            try {
+                                outputStream = openFileOutput("vocabulary.yml", Context.MODE_PRIVATE);
+                                outputStream.write(response.getBytes());
+                                outputStream.close();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            Log.d(TAG, "@@ ");
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // mTextView.setText("That didn't work!");
+                            Log.d(TAG, "@@ marche pas");
+                        }
+                    }
+            );
+
+            classifiers[i] = new opencv_ml.CvSVM();
+            classifiers[i].load("Data_BOW/classifiers/" + classifiersList.get(i).toString() + ".xml");
+        }
+
+        //String refFile = "vocabulary.yml";
+        //this.ToCache(this, "files" + "/" + refFile, refFile).getPath();
 
         /*File file;
         try {
@@ -291,16 +382,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
 */
-        Toast.makeText(this, YMLTry[0] + "YOLO", Toast.LENGTH_LONG).show();
-        File file = new File(Environment.getExternalStorageDirectory(),
-                "response");
-        //Toast.makeText(this, file.getAbsolutePath()+" "+file.getName(),Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, YMLTry[0] + "YOLO", Toast.LENGTH_LONG).show();
+        //File file = new File(Environment.getExternalStorageDirectory(),"response");
+        Toast.makeText(this, fileYML.getName()+" ",Toast.LENGTH_LONG).show();
+
+        //fileYML
 
 
         //Code Prof V2
         final opencv_core.Mat vocabulary;
         Loader.load(opencv_core.class);
-        opencv_core.CvFileStorage storage = opencv_core.cvOpenFileStorage("response", null, opencv_core.CV_STORAGE_READ);
+        opencv_core.CvFileStorage storage = opencv_core.cvOpenFileStorage("vocabulary.yml", null, opencv_core.CV_STORAGE_READ);
+        //Toast.makeText(this, fileYML.getAbsolutePath(), Toast.LENGTH_LONG).show();
         //Pointer p = opencv_core.cvReadByName(storage, null, "vocabulary", opencv_core.cvAttrList());
         /*opencv_core.CvMat cvMat = new opencv_core.CvMat(p);
         vocabulary = new opencv_core.Mat(cvMat);
@@ -325,24 +418,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         System.out.println("Vocab is set");
         */
 
-
         //Request JSON viendra ici
         //ArrayList<HashMap<String, Object>> list;
-
-
-    //int classNumber = i;
-
-    String[] class_names;
-    class_names =new String[3];
-
-    class_names[0]="Coca";
-    class_names[1]="Pepsi";
-    class_names[2]="Sprite";
-
-
-    final opencv_ml.CvSVM[] classifiers;
-    classifiers =new opencv_ml.CvSVM[3];
-
 
         //Ajout venu du prof
         /*
