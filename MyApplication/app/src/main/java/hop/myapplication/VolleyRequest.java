@@ -1,16 +1,21 @@
 package hop.myapplication;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+
+import static hop.myapplication.Analyse.logo;
 
 
 public class VolleyRequest extends AppCompatActivity implements View.OnClickListener{
@@ -161,5 +168,24 @@ public class VolleyRequest extends AppCompatActivity implements View.OnClickList
                 }
         );
         queue.add(stringRequest);
+    }
+
+    public void requestImage(final Context context, String url) {
+        ImageRequest imageRequest = new ImageRequest(url,
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap bitmap) {
+                        MethodesImage.ToCache(context,"/photoResponse","imageResponse", bitmap);
+                        Analyse.photo (context,logo);
+                    }
+                },
+                0, 0, ImageView.ScaleType.CENTER_CROP, null,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        //Log.i(tag, "load error");
+                    }
+                }
+        );
+        queue.add(imageRequest);
     }
 }
