@@ -1,2 +1,0 @@
-# PIM
-Projet PIM TABA/BILLIAERT

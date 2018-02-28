@@ -1,0 +1,39 @@
+{
+    "brands": [
+        {
+            "brandname": "Coca cola",
+            "url": "http://www.coca-cola.com",
+            "classifier": "Coca.xml",
+            "images": [
+                "Coca_12.jpg",
+                "Coca_13.jpg",
+                "Coca_14.jpg",
+                "Coca_15.jpg"
+            ]
+        },
+        {
+            "brandname": "Pepsi",
+            "url": "http://www.pepsi.com",
+            "classifier": "Pepsi.xml",
+            "images": [
+                "Pepsi_13.jpg",
+                "Pepsi_14.jpg",
+                "Pepsi_15.jpg",
+                "Pepsi_16.jpg"
+            ]
+        },
+        {
+            "brandname": "Sprite",
+            "url": "http://www.sprite.com",
+            "classifier": "Sprite.xml",
+            "images": [
+                "Sprite_13.jpg",
+                "Sprite_14.jpg",
+                "Sprite_15.jpg",
+                "Sprite_16.jpg",
+                "Sprite_17.jpg"
+            ]
+        }
+    ],
+    "vocabulary": "vocabulary.yml"
+}
