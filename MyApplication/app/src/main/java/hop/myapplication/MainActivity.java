@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button captureButton;
     Button libraryButton;
     Button analyseButton;
-    //Button websiteButton;
 
     ImageView photoView;
+
 
     private static final String SHARED_PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider";
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     protected void startWebsiteActivity() {
         //lance internet
-        Uri uri = Uri.parse("http://www.google.com/#q=fish");
+        Uri uri = Uri.parse("http://www.google.com/#"); //faire un tableau comprenant les differents sites web des marques, puis, selon la marque, aller chercher le bon site dans le tableau
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
