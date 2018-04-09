@@ -1,13 +1,17 @@
 package hop.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -41,11 +45,14 @@ import org.json.JSONObject;
 
 
 public class Analyse extends AppCompatActivity implements View.OnClickListener {
-
+private static String urlmarque;
     public void onClick(View view) {
     }
 
     static ImageView logo;
+    static Button websiteButton;
+    static TextView textView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +60,17 @@ public class Analyse extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.analyse);
         startAnalyseActivity(getApplicationContext());
         logo = (ImageView) findViewById(R.id.logo);
+        websiteButton = (Button) findViewById(R.id.websiteButton);
+
+        websiteButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                Intent viewIntent =
+                        new Intent("android.intent.action.VIEW",
+                                Uri.parse(urlmarque));
+                startActivity(viewIntent);
+
+            }
+        });
     }
 
     public static void startAnalyseActivity(Context context) {
@@ -81,6 +99,7 @@ public class Analyse extends AppCompatActivity implements View.OnClickListener {
         //create BoF (or BoW) descriptor extractor
         final BOWImgDescriptorExtractor bowide;
         bowide = new BOWImgDescriptorExtractor(detector.asDescriptorExtractor(), matcher);
+
 
         //Set the dictionary with the vocabulary we created in the first step
         bowide.setVocabulary(vocabulary);
@@ -139,7 +158,9 @@ public class Analyse extends AppCompatActivity implements View.OnClickListener {
             }
             // timePrediction = System.currentTimeMillis() - timePrediction;
             System.out.println("L'image  predicted as " + bestMatch + " in " + 0 + " ms");
-            Toast.makeText(context, "L'image  predicted as " + bestMatch + " in " + 0 + " ms", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "L'image  correspond à la marque " + bestMatch , Toast.LENGTH_LONG).show();
+            //textView.setText(bestMatch);
+
             //VolleyRequest.requestImage(logo, url);
             VolleyRequest volley = new VolleyRequest(context);
             String url = "";
@@ -147,6 +168,7 @@ public class Analyse extends AppCompatActivity implements View.OnClickListener {
 
                 if(bestMatch.equals(JSON.getJSONArray("brands").getJSONObject(i).getString("classifier").substring(0, JSON.getJSONArray("brands").getJSONObject(i).getString("classifier").lastIndexOf('.')))){
                     url += "http://www-rech.telecom-lille.fr/freeorb/train-images/" + JSON.getJSONArray("brands").getJSONObject(i).getJSONArray("images").getString(0);
+                    setURL(JSON.getJSONArray("brands").getJSONObject(i).getString("url"));
                 }
             }
             System.out.println("azerty :"+url);
@@ -159,9 +181,21 @@ public class Analyse extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    public static void  setURL(String url){
+        urlmarque =url;
+    }
+
     public static void photo (Context context, ImageView logo){
         Uri myUri = Uri.parse(context.getCacheDir() + "/" + "imageResponse");
         logo.setImageURI(myUri);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent mainIntent;
+        mainIntent = new Intent(Analyse.this, MainActivity.class);
+        startActivity(mainIntent);
+        return;
     }
 
     public static String getFileContents(final File file) throws IOException {
